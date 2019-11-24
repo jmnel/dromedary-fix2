@@ -1,0 +1,16 @@
+Create virtual and activate virtual environment.
+$ python -m venv env
+$ source env/bin/activate
+
+Install dependencies.
+$ pip install -r requirements.txt
+
+Compile libraries with cython.
+$ python setup build
+
+Package with pyinstaller.
+$ ./pyinstaller_script.sh
+
+Final build product is now located at './dist/main/main'. Run it as follows:
+$ ./dist/main/main
+
