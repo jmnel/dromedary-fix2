@@ -6,7 +6,7 @@ Install dependencies.
 $ pip install -r requirements.txt
 
 Compile libraries with cython.
-$ python setup build
+$ python setup.py build
 
 Package with pyinstaller.
 $ ./pyinstaller_script.sh

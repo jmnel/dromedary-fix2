@@ -1,0 +1,40 @@
+Guide for building example on Windows 10 64bit.
+
+Install Anaconda3. It is assumed that Anaconda's environments are in: $HOME\Anaconda3\envs.
+
+Launch Anaconda3 Powershell prompt.
+
+Clone this repo somewhere reasonable.
+$ git clone https://github.com/jmnel/dromedary-fix2
+$ cd dromedary-fix2
+
+Create and activate conda environment.
+$ conda create --name condaenv
+$ conda activate --name condaenv
+
+Install dependencies.
+$ conda install cython numpy pyinstaller scipy
+$ conda install -c conda-forge pyside2
+
+Run cython via Python's setup.py mechanism.
+$ python setup.py build
+
+Edit main-win64.spec in 2 locations to reflect your user's home directory location. For example change:
+C:\\Users\\jacques\\Anaconda3\\envs\\... -> C:\\Users\\johndoe\\Anaconda3\\envs\\...
+
+Run pyinstaller with 'main-win64.spec' file.
+$ pyinstaller main-win64.spec
+
+Build product is located in 'dist\main\main.exe'. Run it as follows:
+$ .\dist\main\main.exe
+
+Some important notes:
+Anaconda installs Qt platform plugins in $HOME\Anaconda3\envs\<env-name>\Library\plugins\platforms. This must be in the path specified for 'pathex' in the spec file. The libraries in this folder are copied to the build product directory at 'dist\main\'. These are required for the Qt application to run.
+
+The binaries step of the spec file copies the compiled cython libraries into the directory of main.exe. Without this, python will not be able to import the modules.
+
+The following hidden imports are needed, because pyinstaller fails to find them automatically:
+PySide2, PySide2.QtGui, PySide2.QtCore, PySide2.QtWidgets, numpy, and scipy.optimize
+
+If this does not work, you may have something missing from your environment variables, particularly from PATH.
+

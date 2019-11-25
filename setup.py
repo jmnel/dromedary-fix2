@@ -1,7 +1,14 @@
 from distutils.core import setup
 from Cython.Build import cythonize
+from distutils.extension import Extension
+
+#sourcefiles = ['solver/solver.py']
+
+extensions = [
+        Extension('solver', ['solver/solver.py']),
+        Extension('GUI', ['solver/GUI.py'])
+        ]
 
 setup(
-    name='test solver app',
-    ext_modules = cythonize('solver/*.py', compiler_directives={'language_level': '3'})
-    )
+    ext_modules=cythonize(extensions)
+)

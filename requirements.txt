@@ -1,5 +1,0 @@
-cython
-pyinstaller
-numpy
-scipy
-pyside2
