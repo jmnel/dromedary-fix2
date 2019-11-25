@@ -12,6 +12,9 @@ Create and activate conda environment.
 $ conda create --name condaenv
 $ conda activate --name condaenv
 
+Set python version to 3.7.4.
+$ conda install python=3.7.4
+
 Install dependencies.
 $ conda install cython numpy pyinstaller scipy
 $ conda install -c conda-forge pyside2
