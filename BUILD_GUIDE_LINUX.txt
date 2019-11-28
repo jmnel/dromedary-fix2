@@ -1,16 +1,108 @@
-Create virtual and activate virtual environment.
-$ python -m venv env
-$ source env/bin/activate
+Guide for building example on Linux.
+
+I am using Gentoo-5.3.8 but this guide will also include steps for Ubuntu.
+
+Install Anaconda
+
+Ensure the following Anaconda dependencies are installed:
+
+Gentoo:
+
+Install the following packages if not already installed:
+x11-libs/libXau 
+x11-libs/libxcb 
+x11-libs/libX11 
+x11-libs/libXext 
+x11-libs/libXfixes 
+x11-libs/libXrender 
+x11-libs/libXi 
+x11-libs/libXcomposite 
+x11-libs/libXrandr 
+x11-libs/libXcursor 
+x11-libs/libXdamage 
+x11-libs/libXScrnSaver 
+x11-libs/libXtst 
+media-libs/alsa-lib 
+media-libs/mesa
+
+$ emerge -a <name-of-package>
+
+Ubuntu:
+
+libgl1-mesa-glx 
+libegl1-mesa
+libxrandr2
+libxrandr2
+libxss1
+libxcursor1
+libxcomposite1 
+libasound2 
+libxi6 
+libxtst6
+
+$ apt-get install <name-of-package>
+
+Download 64-bit (x86) Anaconda installer for Python 3.7
+$ cd Downloads
+$ wget https://repo.anaconda.com/archive/Anaconda3-2019.10-Linux-x86_64.sh
+
+Verify checksum of installer
+$ sha256sum Anaconda3-2019.10-Linux-x86_64.sh
+
+Expected result for latest version:
+45c851b7497cc14d5ca060064394569f724b67d9b5f98a926ed49b834a6bb73a  Anaconda3-2019.03-Linux-x86_64.sh
+
+Run installer
+$ bash Anaconda3-2019.10-Linux-x86_64.sh
+
+Presh enter to scroll through license and answer yes to accept license.
+
+Pick '/home/<your-username>/.anaconda3' as the install location. The '.' makes it a
+hidden folder to prevent cluttering up my home directory.
+
+Answer no to final question. It's better to add conda to path manually.
+Add the following to the config file for your shell (.bashrc or .zshrc).
+
+$ export PATH=$HOME/.anaconda3/bin:$PATH
+
+After installing Anaconda, we ready to bulid the example.
+
+Clone this repo somewhere reasonable.
+$ git clone https://github.com/jmnel/dromedary-fix2
+$ cd dromedary-fix2
+
+Create and activate conda environment.
+$ conda create --name condaenv
+$ conda activate --name condaenv
+
+Set python version to 3.7.4.
+$ conda install python=3.7.4
 
 Install dependencies.
-$ pip install -r requirements.txt
+$ conda install cython numpy pyinstaller scipy
+$ conda install -c conda-forge pyside2
 
-Compile libraries with cython.
+If you are using Intel architecture, install Intel MKL. Since you are seeking
+maximum portability, don't use this.
+$ conda install -c intel mkl-service
+
+Run cython via Python's setup.py mechanism.
 $ python setup.py build
 
-Package with pyinstaller.
-$ ./pyinstaller_script.sh
+Edit main-linux.spec to reflect your user's home directory location.
 
-Final build product is now located at './dist/main/main'. Run it as follows:
+Run pyinstaller with 'main-linux.spec' file.
+$ pyinstaller main-linux.spec
+
+Build product is located in 'dist\main\main.exe'. Run it as follows:
 $ ./dist/main/main
 
+Some important notes:
+Unlike Windows build, Qt platform plugins seem to work automatically. Perhaps this is because I already have Qt libraries installed.
+
+The binaries step of the spec file copies the compiled cython libraries into the directory of main.exe. Without this, python will not be able to import the modules.
+
+The following hidden imports are needed, because pyinstaller fails to find them automatically:
+PySide2, PySide2.QtGui, PySide2.QtCore, PySide2.QtWidgets, numpy, six, and scipy.optimize
+
+If this does not work, you may have something missing from your environment variables, particularly from PATH.

@@ -3,24 +3,14 @@
 block_cipher = None
 
 
-a = Analysis(['main.py'],
-             pathex=[
-                '.'
-            ],
-             binaries=[
-                ( './build/lib.linux-x86_64-3.7/solver.cpython-37m-x86_64-linux-gnu.so', '.'),
-                ( './build/lib.linux-x86_64-3.7/GUI.cpython-37m-x86_64-linux-gnu.so', '.')
-                ],
+a = Analysis(['main.spec'],
+             pathex=['C:\\Users\\jacques\\repos\\jmnel\\dromedary-fix2'],
+             binaries=[],
              datas=[],
-             hiddenimports=[
-                'PySide2',
-                'PySide2.QtGui',
-                'PySide2.QtCore',
-                'PySide2.QtWidgets',
-                'numpy',
-                'scipy.optimize',
-                'six'
-                ],
+             hiddenimports=['PySide2', 
+                            'PySide2.QtWidgets', 
+                            'PySide2.QtCore', 
+                            'PySide2.QtGui'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],
@@ -35,11 +25,11 @@ exe = EXE(pyz,
           [],
           exclude_binaries=True,
           name='main',
-          debug=False,
+          debug=True,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=False )
+          console=True , resources=['build\\\\lib.win-amd64-3.7\\\\GUI.cp37-win_amd64.pyd', 'build\\\\lib.win-amd64-3.7\\\\solver.cp37-win_amd64.pyd'])
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
